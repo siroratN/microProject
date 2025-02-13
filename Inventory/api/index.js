@@ -1,11 +1,10 @@
 dotenv.config();
 const app = express();
 import express from 'express';
-import amqp from 'amqplib';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import Product from '../model/Model.js';
+import inventoryRoute from '../api/routes/inventoryRoute.js';
 app.use(cors());
 
 app.use(express.json());
@@ -22,6 +21,7 @@ async function connectDB() {
     }
 }
 
+app.use("/api/inventory", inventoryRoute);
 
 // app.get('/products', async (req, res) => {
 //     try {

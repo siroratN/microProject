@@ -1,51 +1,28 @@
-dotenv.config();
-const app = express();
-import express from 'express';
 import amqp from 'amqplib';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
 import Product from '../model/Model.js';
-app.use(cors());
 
-app.use(express.json());
-async function connectDB() {
-    if (mongoose.connection.readyState === 0) {
-        try {
-            await mongoose.connect(process.env.MONGO_URL);
-            console.log("db success")
-
-        } catch (error) {
-            console.error('Error connecting to MongoDB:', error);
-            throw error;
-        }
-    }
-}
-
-
-app.get('/products', async (req, res) => {
+export const getProducts = async (req, res) => {
+    const productId = req.params.id;
     try {
-        const products = await Product.find();
+        const products = await Product.findById(productId);
         res.json(products);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch products" });
     }
-});
+};
 
-// 🛒 API: เพิ่มสินค้าใหม่
-app.post('/newproducts', async (req, res) => {
+export const addProduct = async (req, res) => {
     try {
-        const { name, quantity, threshold } = req.body; // รับข้อมูลจาก body
+        const { name, quantity, threshold } = req.body;
         const pro = new Product({ name, quantity, threshold });
         await pro.save();
         res.json(pro);
     } catch (error) {
         res.status(500).json({ error: "Failed to create product" });
     }
-});
+};
 
-// 🛒 API: อัปเดตจำนวนสินค้า
-app.post('/update-stock', async (req, res) => {
+export const updateStock = async (req, res) => {
     const { productId, quantityChange, action } = req.body;
     try {
         const product = await Product.findById(productId);
@@ -60,7 +37,6 @@ app.post('/update-stock', async (req, res) => {
             await product.save();
         }
 
-
         if (product.quantity < product.threshold) {
             sendAlertMessage(product);
         }
@@ -69,9 +45,9 @@ app.post('/update-stock', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to update stock" });
     }
-});
+};
 
-async function sendAlertMessage(product) {
+const sendAlertMessage = async (product) => {
     try {
         const connection = await amqp.connect('amqp://localhost');
         const channel = await connection.createChannel();
@@ -89,9 +65,4 @@ async function sendAlertMessage(product) {
     } catch (error) {
         console.error("Error sending alert message:", error);
     }
-}
-
-app.listen(4001, async () => {
-    await connectDB();
-    console.log('Inventory running on port 4001');
-});
+};

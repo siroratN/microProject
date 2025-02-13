@@ -46,14 +46,20 @@ app.post('/newproducts', async (req, res) => {
 
 // 🛒 API: อัปเดตจำนวนสินค้า
 app.post('/update-stock', async (req, res) => {
-    const { productId, quantityChange } = req.body;
+    const { productId, quantityChange, action } = req.body;
     try {
         const product = await Product.findById(productId);
 
         if (!product) return res.status(404).json({ error: "Product not found" });
 
-        product.quantity -= quantityChange;
-        await product.save();
+        if (action == "IN") {
+            product.quantity += quantityChange;
+            await product.save();
+        } else if (action == "OUT") {
+            product.quantity -= quantityChange;
+            await product.save();
+        }
+
 
         if (product.quantity < product.threshold) {
             sendAlertMessage(product);

@@ -7,6 +7,7 @@ dotenv.config();
 const app = express();
 app.use(cors()); 
 app.use(express.json());
+import StockLog from './model/Model.js';
 
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {
@@ -20,7 +21,6 @@ async function connectDB() {
         }
     }
 }
-import StockLog from './model/Model.js';
 
 
 app.post('/log-stock', async (req, res) => {
@@ -29,7 +29,7 @@ app.post('/log-stock', async (req, res) => {
     const stockLog = new StockLog({ productId, quantityChange, action });
     await stockLog.save();
 
-    await axios.post('http://localhost:4001/update-stock', { productId, quantityChange });
+    await axios.post('http://localhost:4001/update-stock', { productId, quantityChange, action });
 
     res.json({ message: "Stock movement recorded", stockLog });
 });

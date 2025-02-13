@@ -28,4 +28,7 @@ app.post('/log-stock', async (req, res) => {
     res.json({ message: "Stock movement recorded", stockLog });
 });
 
+
+  
+
 app.listen(4002, () => console.log('Stock Service running on port 4002'));

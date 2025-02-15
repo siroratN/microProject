@@ -3,6 +3,6 @@ import * as stockController from "../controller/stockController.js"
 
 const router = express.Router()
 
-router.post("/lock_stock", stockController.lock_stock)
+router.post("/log_stock", stockController.log_stock)
 
 export default router

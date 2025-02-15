@@ -11,11 +11,20 @@ app.use(express.json());
 
 mongoose.connect('mongodb://localhost:27017/inventory', { useNewUrlParser: true, useUnifiedTopology: true });
 
+// const Product = mongoose.model('Product', new mongoose.Schema({
+//     name: String,
+//     quantity: Number,
+//     threshold: Number, // ค่าต่ำสุดสำหรับแจ้งเตือน
+// }));
+
 const Product = mongoose.model('Product', new mongoose.Schema({
+    productId:Number,
+    category:String,
     name: String,
     quantity: Number,
     threshold: Number, // ค่าต่ำสุดสำหรับแจ้งเตือน
 }));
+
 
 app.get('/products', async (req, res) => {
     try {

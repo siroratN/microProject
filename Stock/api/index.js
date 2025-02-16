@@ -27,4 +27,5 @@ app.use("/api/stock", stockController);
 app.listen(4002, async () => {
     await connectDB();
     console.log('Stock Service running on port 4002');
+
 });

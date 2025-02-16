@@ -23,7 +23,7 @@ export const addProduct = async (req, res) => {
 };
 
 export const updateStock = async (req, res) => {
-    const { productId, quantityChange, action } = req.body;
+    const { productId, quantityChange, action, name } = req.body;
     try {
         const product = await Product.findById(productId);
 
@@ -47,22 +47,19 @@ export const updateStock = async (req, res) => {
     }
 };
 
-const sendAlertMessage = async (product) => {
-    try {
-        const connection = await amqp.connect('amqp://localhost');
-        const channel = await connection.createChannel();
-        const queue = 'alert_queue';
+async function sendAlertMessage(product) {
+    const connection = await amqp.connect('amqp://localhost');
+    const channel = await connection.createChannel();
+    const queue = 'alert_queue';
 
-        await channel.assertQueue(queue);
-        channel.sendToQueue(queue, Buffer.from(JSON.stringify({
-            productId: product._id,
-            name: product.name,
-            quantity: product.quantity,
-            message: "Stock is running low!"
-        })));
+    await channel.assertQueue(queue);
+    channel.sendToQueue(queue, Buffer.from(JSON.stringify({
+        productId: product._id,
+        name: product.name,
+        quantity: product.quantity,
+        message: "Stock is running low!"
+    })));
 
-        console.log(`[Inventory Service] 📢 Sent alert for product: ${product.name}`);
-    } catch (error) {
-        console.error("Error sending alert message:", error);
-    }
-};
+    console.log(`📢 Sent alert for product: ${product.name}`);
+}
+

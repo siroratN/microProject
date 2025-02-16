@@ -3,6 +3,6 @@ import * as reportController from "../controller/reportController.js"
 
 const router = express.Router()
 
-router.post("/report", reportController.log_stock)
+router.post("/Createreport", reportController.createReport)
 
 export default router

@@ -1,14 +1,19 @@
 import Users from '../model/Model.js';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
 
-const Register = async (req, res) => {
+export const Register = async (req, res) => {
     try {
         const { username, password, role, first_name, last_name } = req.body;
         if (!username || !password || !role || !first_name || !last_name) {
             return res.status(400).json({ error: "กรุณากรอกข้อมูลให้ครบถ้วน" });
         }
+        const check = await Users.findOne({username});
+
+        if(check){
+            return res.status(400).json({error: "username นี้มีผู้ใช้เเล้ว"})
+        }
+
         // Hash รหัสผ่าน (saltRounds = 10 แนะนำเป็นค่ามาตรฐาน)
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -21,7 +26,7 @@ const Register = async (req, res) => {
 };
 
 
-const Login = async(req, res) =>{
+export const Login = async(req, res) => {
     try{
         const {username, password} = req.body
         if (!username || !password) {
@@ -55,5 +60,3 @@ const Login = async(req, res) =>{
         res.status(500).json({error:"Failed to Login"})
     }
 }
-
-export default Login;

@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 app.use(cors()); 
 app.use(express.json());
-import authenController from './controller/authenController.js';
+import authenRoute from './routes/authenRoute.js';
 app.use(cookieParser());
 
 async function connectDB() {
@@ -25,7 +25,7 @@ async function connectDB() {
     }
 }
 
-app.use("/api/authen", authenController);
+app.use("/api/authen", authenRoute);
 
 app.listen(4004, async () => {
     await connectDB();

@@ -50,9 +50,8 @@ const data = [
 //   "timestamp_end": "2/17/2025"
 // }
 
-const createReport = async (req, res) => {
+export const createReport = async (req, res) => {
     const {products, timestamp_start, timestamp_end} = req.body; // products เก็บข้อมูล list productId ที่ผู้ใช้ เลือก (ถ้าไม่เลือกให้ default เป็นเลือกหมดทุกอัน)
-    // console.log(timestamp_start)
     const filter = {};
 
     // ถ้ามีการเลือก products (ต้องเป็น array ที่มีสมาชิก)
@@ -74,7 +73,6 @@ const createReport = async (req, res) => {
 
     // ทำการ query ด้วย filter ที่กำหนด
     const reports = await Report.find(filter).lean();
-    // res.status(200).json(reports);
 
     const filePath = path.join(__dirname, "data.csv");
     const ws = fs.createWriteStream(filePath);
@@ -93,7 +91,6 @@ const createReport = async (req, res) => {
 };
 
 
-export default createReport
 
 // app.get("/download-csv", (req, res) => {
 //   const filePath = path.join(__dirname, "data.csv");

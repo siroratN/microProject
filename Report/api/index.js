@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 app.use(cors()); 
 app.use(express.json());
-import reportController from './controller/reportController.js';
+import reportRoute from './routes/reportRoute.js';
 
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {
@@ -22,7 +22,7 @@ async function connectDB() {
     }
 }
 
-app.use("/api/report", reportController);
+app.use("/api/report", reportRoute);
 
 app.listen(4003, async () => {
     await connectDB();

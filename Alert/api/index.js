@@ -1,26 +1,37 @@
 require('dotenv').config();
 const express = require('express');
 const amqp = require('amqplib');
-const twilio = require('twilio');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(express.json());
 
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false,
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+    }
+});
 
-async function sendSMSNotification(product) {
+async function sendEmailNotification(product) {
+    const mailOptions = {
+        from: process.env.SMTP_USER,
+        to: "siroratnbs@gmail.com", 
+        subject: `Stock Alert: ${product.name}`,
+        text: `สินค้า ${product.name} มีจำนวนเหลือเพียง ${product.quantity} กรุณาเติมสต็อก!`
+    };
+
     try {
-        const message = await client.messages.create({
-            body: `สินค้า ${product.name} มีจำนวนเหลือเพียง ${product.quantity} ต่ำกว่าค่ากำหนด กรุณาเติมสต็อก!`,
-            from: process.env.TWILIO_PHONE_NUMBER,
-            to: process.env.ADMIN_PHONE_NUMBER
-        });
-
-        console.log(`SMS sent: ${message.sid}`);
+        await transporter.sendMail(mailOptions);
+        console.log(`📧 Email sent: ${product.name} stock is low!`);
     } catch (error) {
-        console.error(error);
+        console.error("Error sending email:", error);
     }
 }
+
 
 
 
@@ -36,7 +47,7 @@ async function consumeAlerts() {
         const product = JSON.parse(msg.content.toString());
         console.log("Received stock alert:", product);
 
-        await sendSMSNotification(product);
+        await sendEmailNotification(product);
         channel.ack(msg);
     });
 }

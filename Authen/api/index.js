@@ -3,11 +3,14 @@ import axios from 'axios';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+
 dotenv.config();
 const app = express();
 app.use(cors()); 
 app.use(express.json());
-import reportRoute from './routes/reportRoute.js';
+import authenRoute from './routes/authenRoute.js';
+app.use(cookieParser());
 
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {
@@ -22,9 +25,9 @@ async function connectDB() {
     }
 }
 
-app.use("/api/report", reportRoute);
+app.use("/api/authen", authenRoute);
 
-app.listen(4003, async () => {
+app.listen(4004, async () => {
     await connectDB();
-    console.log('Stock Service running on port 4003');
+    console.log('Stock Service running on port 4004');
 });

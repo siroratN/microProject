@@ -18,7 +18,7 @@ async function sendStockMovementToQueue(productId, quantityChange, action, name)
             timestamp: new Date()
         })));
 
-        console.log(`[Stock Service] Sent stock movement: ${ productId }`);
+        console.log(`Stock save in stocklogs: ${ productId }`);
         await channel.close();
         await connection.close();
     } catch (error) {

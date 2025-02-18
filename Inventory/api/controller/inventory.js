@@ -69,7 +69,7 @@ async function sendAlertMessage(product) {
         message: "Stock is running low!"
     })));
 
-    console.log(`📢 Sent alert for product: ${product.name}`);
+    console.log(`Sent alert for product: ${product.name}`);
 }
 
 // nodeCron.schedule("*/10 * * * * *", async () => {

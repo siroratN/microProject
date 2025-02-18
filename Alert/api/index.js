@@ -26,7 +26,7 @@ async function sendEmailNotification(product) {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log(`📧 Email sent: ${product.name} stock is low!`);
+        console.log(`Email sent: ${product.name}`);
     } catch (error) {
         console.error("Error sending email:", error);
     }

@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "main": "inventory.service.js",
   "type": "module",
-
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "scripts": {
     "start": "node index.js"
   },
@@ -20,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongoose": "^8.10.0"
+    "mongoose": "^8.10.0",
+    "node-cron": "^3.0.3"
   }
 }

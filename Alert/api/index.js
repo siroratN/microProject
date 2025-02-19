@@ -46,7 +46,6 @@ async function consumeAlerts() {
     channel.consume(queue, async (msg) => {
         const product = JSON.parse(msg.content.toString());
         console.log("Received stock alert:", product);
-
         await sendEmailNotification(product);
         channel.ack(msg);
     });

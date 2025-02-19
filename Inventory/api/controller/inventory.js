@@ -1,7 +1,16 @@
 import amqp from 'amqplib';
 import Product from '../model/Model.js';
+import nodeCron from 'node-cron';
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch products" });
+    }
+};
 
-export const getProducts = async (req, res) => {
+export const getProductsById = async (req, res) => {
     const productId = req.params.id;
     try {
         const products = await Product.findById(productId);
@@ -11,14 +20,7 @@ export const getProducts = async (req, res) => {
     }
 };
 
-export const getAllProducts = async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.json(products);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch products" });
-    }
-};
+
 
 
 
@@ -71,6 +73,18 @@ async function sendAlertMessage(product) {
         message: "Stock is running low!"
     })));
 
-    console.log(`📢 Sent alert for product: ${product.name}`);
+    console.log(`Sent alert for product: ${product.name}`);
 }
 
+// nodeCron.schedule("*/10 * * * * *", async () => {
+
+//     try {
+//         const products = await Product.find();
+//         const lowStockProducts = products.filter(p => p.quantity < p.threshold);
+//         for (const product of lowStockProducts) {
+//             await sendAlertMessage(product);
+//         }
+//     } catch (error) {
+//         console.error(error);
+//     }
+// });

@@ -21,16 +21,19 @@ async function sendEmailNotification(product) {
         from: process.env.SMTP_USER,
         to: "siroratnbs@gmail.com", 
         subject: `Stock Alert: ${product.name}`,
-        text: `สินค้า ${product.name} มีจำนวนเหลือเพียง ${product.quantity}. กรุณาเติมสต็อก!`
+        text: `สินค้า ${product.name} มีจำนวนเหลือเพียง ${product.quantity} กรุณาเติมสต็อก!`
     };
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log(`📧 Email sent: ${product.name} stock is low!`);
+        console.log(`Email sent: ${product.name}`);
     } catch (error) {
         console.error("Error sending email:", error);
     }
 }
+
+
+
 
 async function consumeAlerts() {
     const connection = await amqp.connect('amqp://localhost');
@@ -38,7 +41,7 @@ async function consumeAlerts() {
     const queue = 'alert_queue';
 
     await channel.assertQueue(queue);
-    console.log("📬 Waiting for stock alerts...");
+    console.log("Waiting for stock alerts...");
 
     channel.consume(queue, async (msg) => {
         const product = JSON.parse(msg.content.toString());
@@ -51,4 +54,4 @@ async function consumeAlerts() {
 
 consumeAlerts();
 
-app.listen(4004, () => console.log("📢 Notification Service running on port 4004"));
+app.listen(4004, () => console.log("Notification Service running on port 4004"));

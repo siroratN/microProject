@@ -33,7 +33,7 @@ const log_stock = async (req, res) => {
     const stockLog = new StockLog({ productId, quantityChange, action, name });
     await stockLog.save();
 
-    await axios.post('http://localhost:4001/api/inventory/updateStock', { productId, quantityChange, action, name });
+    await axios.post('http://localhost:5001/inventory/updateStock', { productId, quantityChange, action, name });
     sendStockMovementToQueue(productId, quantityChange, action, name)
 
     res.json({ message: "Stock movement recorded", stockLog });

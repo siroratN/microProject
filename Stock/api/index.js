@@ -22,7 +22,7 @@ async function connectDB() {
     }
 }
 
-app.use("/api/stock", stockController);
+app.use("/", stockController);
 
 app.listen(4002, async () => {
     await connectDB();

@@ -25,7 +25,7 @@ async function connectDB() {
     }
 }
 
-app.use("/api/authen", authenRoute);
+app.use("/", authenRoute);
 
 app.listen(4004, async () => {
     await connectDB();

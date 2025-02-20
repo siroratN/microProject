@@ -20,6 +20,10 @@ export const getProductsById = async (req, res) => {
     }
 };
 
+
+
+
+
 export const addProduct = async (req, res) => {
     try {
         const { name, quantity, threshold } = req.body;
@@ -32,7 +36,7 @@ export const addProduct = async (req, res) => {
 };
 
 export const updateStock = async (req, res) => {
-    const { productId, quantityChange, action, name } = req.body;
+    const { productId} = req.body;
     try {
         const product = await Product.findById(productId);
 

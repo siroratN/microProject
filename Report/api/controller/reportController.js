@@ -38,11 +38,7 @@ async function consumeStockMovementQueue() {
 consumeStockMovementQueue();
 
 
-const data = [
-  { id: 1, name: "John Doe", age: 30 },
-  { id: 2, name: "Jane Doe", age: 28 },
-  { id: 3, name: "Alice Smith", age: 35 },
-];
+
 
 // {
 //   "products": ["67ab605a6ebb49d25c4dbac4", "67ab605a6ebb49d25c4dbac4"],
@@ -59,11 +55,10 @@ export const createReport = async (req, res) => {
       filter.productId = { $in: products };
     }
 
-    // ถ้ามีการระบุวันเริ่มต้นหรือวันสิ้นสุด
+    
     if (timestamp_start || timestamp_end) {
       filter.timestamp = {};
       if (timestamp_start) {
-        // แปลง string เป็น Date object
         filter.timestamp.$gte = new Date(timestamp_start);
       }
       if (timestamp_end) {
@@ -71,7 +66,6 @@ export const createReport = async (req, res) => {
       }
     }
 
-    // ทำการ query ด้วย filter ที่กำหนด
     const reports = await Report.find(filter).lean();
 
     const filePath = path.join(__dirname, "data.csv");

@@ -21,7 +21,7 @@ async function connectDB() {
     }
 }
 
-app.use("/api/inventory", inventoryRoute);
+app.use("/", inventoryRoute);
 
 // app.get('/products', async (req, res) => {
 //     try {

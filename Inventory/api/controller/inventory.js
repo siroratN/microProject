@@ -20,18 +20,15 @@ export const getProductsById = async (req, res) => {
     }
 };
 
-
-
-
-
 export const addProduct = async (req, res) => {
     try {
-        const { name, quantity, threshold } = req.body;
-        const pro = new Product({ name, quantity, threshold });
+        const { name, quantity, threshold, image } = req.body;
+        const pro = new Product({ name, quantity, threshold, image });
+        console.log(pro);
         await pro.save();
         res.json(pro);
     } catch (error) {
-        res.status(500).json({ error: "Failed to create product" });
+        res.status(500).json(error);
     }
 };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios"; // ✅ เพิ่ม axios
+import axios from "axios";
 
 const ProductDetail = () => {
   const { id } = useParams(); 
@@ -38,9 +38,21 @@ const ProductDetail = () => {
 
   const handleConfirm = async () => {
     try {
-      await axios.put(`http://localhost:5001/inventory/updateQuantity/${id}`, {
-        quantity: tempQuantity,
+
+      const quantityDiff = tempQuantity - product.quantity;
+
+      if (quantityDiff === 0) {
+        setIsModalOpen(false);
+        return;
+      }
+      const action = quantityDiff > 0 ? "IN" : "OUT";
+      
+      await axios.post(`http://localhost:5001/stock/updateQuantity/${id}`, {
+        productId: id,
+        quantityChange: Math.abs(quantityDiff),
+        action
       });
+
       setProduct((prev) => ({ ...prev, quantity: tempQuantity }));
       setIsModalOpen(false);
     } catch (error) {
@@ -52,7 +64,7 @@ const ProductDetail = () => {
 
   return (
     <div className="p-10">
-      <h1 className="text-2xl font-bold mb-4">รายละเอียดสินค้า</h1>
+      <h1 className="text-2xl font-bold mb-4">{id}</h1>
       <img
         className="w-64 mb-4"
         src={product.image || "https://cdn.example.com/default-image.jpg"}
@@ -79,7 +91,7 @@ const ProductDetail = () => {
         </button>
       </div>
 
-      {/* ✅ Modal ยืนยัน */}
+      {/* Modal ยืนยัน */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -97,7 +109,10 @@ const ProductDetail = () => {
         </div>
       )}
 
-      <button onClick={() => window.location.href = "http://localhost:5173/home"} className="mt-6 px-4 py-2 bg-gray-700 text-white rounded-lg">
+      <button 
+        onClick={() => window.location.href = "http://localhost:5173/home"} 
+        className="mt-6 px-4 py-2 bg-gray-700 text-white rounded-lg"
+      >
         กลับหน้าแรก
       </button>
     </div>

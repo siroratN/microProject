@@ -8,7 +8,7 @@ import axios from "axios";
 export default function CreateReport() {
   const [Items, setItems] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
-
+  const [error, setError] = useState([])
 
   const [info, setinfo] = useState({
     reportName: "",
@@ -54,14 +54,15 @@ export default function CreateReport() {
 
       console.log("Report generated successfully");
 
-      // ✅ ดึง `downloadUrl` จาก response และดาวน์โหลดไฟล์
       if (response.data.downloadUrl) {
         window.open(`http://localhost:5001${response.data.downloadUrl}`, "_blank");
         console.log("API Response:", response.data);
+        setError("")
       }
 
     } catch (error) {
       console.log("form ERROR", error);
+      setError("data NOT FOUND")
     }
   };
 
@@ -119,13 +120,13 @@ export default function CreateReport() {
             )}
             <div className="flex flex-wrap gap-2">
               {selectedItems.map((item, index) => (
-                <div key={index} className="border border-[#474747] px-4 py-2 rounded-md" value={item.productIDs} onClick={(e) => { removeItem(item.productIDs) }}>
+                <div key={index} className="ml-4 border border-[#474747] px-4 py-2 rounded-md" value={item.productIDs} onClick={(e) => { removeItem(item.productIDs) }}>
                   {item.productName}
                 </div>
               ))}
             </div>
           </div>
-
+          {error && <p className="pl-8 pt-8 text-red-500">{error}</p>}
           <div className="pt-16 flex justify-center">
             <button type="submit"
               class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600

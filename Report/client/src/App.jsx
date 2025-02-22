@@ -34,7 +34,7 @@ export default function CreateReport() {
     }
 
     console.log(selectedItems)
-
+    console.log(info.timestamp_start, info.timestamp_end)
   }
 
   const removeItem = (item) => {
@@ -48,7 +48,7 @@ export default function CreateReport() {
 
     try {
       const products = selectedItems.map(item => item.productIDs);
-
+      console.log("pro_id",products)
       // ส่ง request ไปที่เซิร์ฟเวอร์เพื่อสร้าง report
       const response = await axios.post("http://localhost:5001/report/Createreport", {
         products: products,
@@ -62,8 +62,7 @@ export default function CreateReport() {
       // ✅ ดึง `downloadUrl` จาก response และดาวน์โหลดไฟล์
       if (response.data.downloadUrl) {
         window.open(`http://localhost:5001${response.data.downloadUrl}`, "_blank");
-      } else {
-        console.log("Download URL not found");
+        console.log("API Response:", response.data);
       }
 
     } catch (error) {

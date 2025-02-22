@@ -56,13 +56,13 @@ export const createReport = async (req, res) => {
       filter.productId = { $in: products };
     }
 
-    if (timestamp_start || timestamp_end) {
+    if ((timestamp_start || timestamp_end)&& (timestamp_start !== timestamp_end)) {
       filter.timestamp = {};
       if (timestamp_start) filter.timestamp.$gte = new Date(timestamp_start);
       if (timestamp_end) filter.timestamp.$lte = new Date(timestamp_end);
     }
 
-    const reports = await Report.find().select("-__v").lean();
+    const reports = await Report.find(filter).select("-__v").lean();
     if (!reports.length) {
       return res.status(404).json({ message: "No data found" });
     }

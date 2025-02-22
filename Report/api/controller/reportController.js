@@ -45,43 +45,62 @@ consumeStockMovementQueue();
 //   "timestamp_start": "2/13/2025",
 //   "timestamp_end": "2/17/2025"
 // }
+const filePath = path.join(__dirname, "data.csv");
 
 export const createReport = async (req, res) => {
-    const {products, timestamp_start, timestamp_end} = req.body; // products เก็บข้อมูล list productId ที่ผู้ใช้ เลือก (ถ้าไม่เลือกให้ default เป็นเลือกหมดทุกอัน)
+  try {
+    const { products, timestamp_start, timestamp_end, reportName } = req.body;
     const filter = {};
 
-    // ถ้ามีการเลือก products (ต้องเป็น array ที่มีสมาชิก)
-    if (products && Array.isArray(products) && products.length > 0) {
+    if (Array.isArray(products) && products.length > 0) {
       filter.productId = { $in: products };
     }
 
-    
-    if (timestamp_start || timestamp_end) {
+    if ((timestamp_start || timestamp_end)&& (timestamp_start !== timestamp_end)) {
       filter.timestamp = {};
-      if (timestamp_start) {
-        filter.timestamp.$gte = new Date(timestamp_start);
-      }
-      if (timestamp_end) {
-        filter.timestamp.$lte = new Date(timestamp_end);
-      }
+      if (timestamp_start) filter.timestamp.$gte = new Date(timestamp_start);
+      if (timestamp_end) filter.timestamp.$lte = new Date(timestamp_end);
     }
 
-    const reports = await Report.find(filter).lean();
+    const reports = await Report.find(filter).select("-__v").lean();
+    if (!reports.length) {
+      return res.status(404).json({ message: "No data found" });
+    }
 
-    const filePath = path.join(__dirname, "data.csv");
     const ws = fs.createWriteStream(filePath);
     const csvStream = format({ headers: true });
+
     csvStream.pipe(ws);
-  
     reports.forEach((row) => csvStream.write(row));
     csvStream.end();
-  
+
     ws.on("finish", () => {
-      res.download(filePath, "data.csv", (err) => {
-        if (err) console.error("Error downloading CSV:", err);
-        fs.unlinkSync(filePath);
-      });
+      console.log("CSV file generated:", filePath);
+      res.status(200).json({ message: "Report created", downloadUrl: "/report/Createreport/download" });
     });
+
+    ws.on("error", (err) => {
+      console.error("Error writing CSV:", err);
+      res.status(500).json({ message: "Error generating file" });
+    });
+  } catch (error) {
+    console.error("Server Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const downloadReport = (req, res) => {
+  res.download(filePath, "data.csv", (err) => {
+    if (err) {
+      console.error("Error downloading file:", err);
+      return res.status(500).json({ message: "Error downloading file" });
+    }
+    
+    // ✅ ลบไฟล์หลังจากดาวน์โหลดเสร็จ
+    fs.unlink(filePath, (err) => {
+      if (err) console.error("Error deleting file:", err);
+    });
+  });
 };
 
 

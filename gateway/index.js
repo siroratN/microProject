@@ -11,7 +11,7 @@ app.use("/inventory", proxy("http://localhost:4001"));
 app.use("/stock", proxy("http://localhost:4002"));
 app.use("/alert", proxy("http://localhost:4004"));
 app.use("/authen", proxy("http://localhost:4003"));
-
+app.use("/report", proxy("http://localhost:4005"));
 app.listen(5001, () => {
     console.log("Gateway is Listening to Port 5001");
 });

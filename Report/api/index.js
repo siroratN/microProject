@@ -22,9 +22,9 @@ async function connectDB() {
     }
 }
 
-app.use("/api/report", reportRoute);
+app.use("", reportRoute);
 
-app.listen(4003, async () => {
+app.listen(4005, async () => {
     await connectDB();
-    console.log('Stock Service running on port 4003');
+    console.log('Report Service running on port 4005');
 });

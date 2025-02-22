@@ -33,7 +33,7 @@ export const addProduct = async (req, res) => {
 };
 
 export const updateStock = async (req, res) => {
-    const { productId} = req.body;
+    const {productId, action, quantityChange} = req.body;
     try {
         const product = await Product.findById(productId);
 

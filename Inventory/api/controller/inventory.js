@@ -33,11 +33,11 @@ export const addProduct = async (req, res) => {
 };
 
 export const updateStock = async (req, res) => {
-    const {productId, action, quantityChange} = req.body;
+    const { productId, action, quantityChange } = req.body;
     try {
         const product = await Product.findById(productId);
 
-        if (!product) return res.status(404).json({ error: "Product not found" });
+        if (!product) return res.status(500).json(productId + " not found");
 
         if (action == "IN") {
             product.quantity += quantityChange;

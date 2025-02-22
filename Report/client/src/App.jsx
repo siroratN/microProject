@@ -9,11 +9,7 @@ export default function CreateReport() {
   const [Items, setItems] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
 
-  const [date, setDate] = useState({
-    reportName: "",
-    timestamp_start: "",
-    timestamp_end: ""
-  })
+
   const [info, setinfo] = useState({
     reportName: "",
     timestamp_start: "",
@@ -52,7 +48,6 @@ export default function CreateReport() {
       // ส่ง request ไปที่เซิร์ฟเวอร์เพื่อสร้าง report
       const response = await axios.post("http://localhost:5001/report/Createreport", {
         products: products,
-        reportName: info.reportName,
         timestamp_start: info.timestamp_start,
         timestamp_end: info.timestamp_end
       });
@@ -76,10 +71,7 @@ export default function CreateReport() {
       <Card className="w-full max-w-2xl bg-white">
         <p className="text-2xl text-center pt-8">Create Report</p>
         <form action="" className="pt-8" onSubmit={(e) => { submit(e) }}>
-          <label htmlFor="" className="pl-8 text-xl">Report Name</label>
-          <Input id="ReportName" onChange={(e) => setinfo((prev) => ({ ...prev, reportName: e.target.value }))}
-          />
-          <br />
+
 
           <div className="flex items-center gap-0">
             {/* Start Date */}
@@ -111,8 +103,8 @@ export default function CreateReport() {
           <div className="mt-8" >
             <label htmlFor="" className="pl-8 text-xl">Select Inventory</label>
             <select className="mx-8 flex h-10 w-full max-w-xl bg-[#F7F7F7] rounded-md border border-gray-300  px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onChange={(e) => { handleSelect(e.target.value) }} >
-              <option value="" disabled key={999}>Select Item</option>
+              onChange={(e) => { handleSelect(e.target.value) }} defaultValue="">
+              <option value="" disabled>Select Item</option>
               {
                 Items?.map((item, index) => {
                   return <option value={JSON.stringify({ productIDs: item._id, productName: item.name })} key={index}>{item.name}</option>
@@ -122,7 +114,9 @@ export default function CreateReport() {
           </div>
 
           <div className="p-4">
-            <h2 className="text-lg font-semibold mb-2">Selected Items</h2>
+                        {selectedItems.length > 0 && (
+              <h2 className="text-lg font-semibold mb-2">Selected Items</h2>
+            )}
             <div className="flex flex-wrap gap-2">
               {selectedItems.map((item, index) => (
                 <div key={index} className="border border-[#474747] px-4 py-2 rounded-md" value={item.productIDs} onClick={(e) => { removeItem(item.productIDs) }}>

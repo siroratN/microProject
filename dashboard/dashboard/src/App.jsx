@@ -23,14 +23,6 @@ const Dashboard = () => {
   }, []);
 
 
-
-  const topItems = [
-    { name: "Beautiful Chair", quantity: 12 },
-    { name: "Modern Desk", quantity: 10 },
-    { name: "Vintage Lamp", quantity: 8 },
-    { name: "Cozy Sofa", quantity: 6 },
-    { name: "Wooden Shelf", quantity: 4 },
-  ]
   return (
     <div className="flex">
       
@@ -64,9 +56,8 @@ const Dashboard = () => {
 
           <div className="p-4 bg-white  rounded-lg">
             <h2 className="text-lg font-semibold">Stock In & Stock Out last 7 days</h2>
-            <p className="text-green-500">↑ 12.5% Since last week</p>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={300} className="pt-4">
               <LineChart data={stock?.data?.graph}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />

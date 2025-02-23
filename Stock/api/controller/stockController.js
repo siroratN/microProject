@@ -46,6 +46,7 @@ export const dashboard_stock = async (req, res) => {
         stock_in_7: "",
         stock_out_7: "",
         top5: "",
+        graph: ""
     }
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -108,8 +109,44 @@ export const dashboard_stock = async (req, res) => {
             $limit: 5 
         }
     ]);
+    
 
     data.top5 = top5_data
+
+
+    // ข้อมูลกราฟ
+
+    const stockDataGraph = await StockLog.aggregate([
+        {
+            $match: {
+                timestamp: { 
+                    $gte: new Date(new Date().setDate(new Date().getDate() - 7)) 
+                }
+            }
+        },
+        {
+            $group: {
+                _id: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
+                totalStockIn: { 
+                    $sum: { $cond: [{ $eq: ["$action", "IN"] }, "$quantityChange", 0] }
+                },
+                totalStockOut: { 
+                    $sum: { $cond: [{ $eq: ["$action", "OUT"] }, "$quantityChange", 0] }
+                }
+            }
+        },
+        { $sort: { _id: 1 } }, // เรียงวันที่จากเก่าไปใหม่
+        {
+            $project: {
+                _id: 0,
+                date: "$_id",
+                stockIn: "$totalStockIn",
+                stockOut: "$totalStockOut"
+            }
+        }
+    ]);
+
+    data.graph = stockDataGraph
 
     res.json({ message: "Query Finished", data });
 };

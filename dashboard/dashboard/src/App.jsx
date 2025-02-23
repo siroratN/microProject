@@ -5,28 +5,24 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 const Dashboard = () => {
   const [stock, setStock] = useState("")
-
+  const [inventory, setinventory] = useState("")
   useEffect(() => {
-    try {
-      axios.get("http://localhost:5001/stock/dashboard_stock").then((res) => {
+    axios.get("http://localhost:5001/stock/dashboard_stock")
+      .then((res) => {
+        console.log("API Data:", res.data);
         setStock(res.data);
-      });
-      console.log(stock)
-    } catch (error) {
-      console.log("Error", error)
-    }
+      })
+      .catch((error) => console.log("Error fetching stock data:", error));
+
+    axios.get("http://localhost:5001/inventory/dashboard_inventory")
+      .then((res)=>{
+        setinventory(res.data)
+      })
+      .catch((error)=>{console.log("Error fetching inventory data: "), error})
 
   }, []);
 
-  const data = [
-    { date: "18th", thisWeek: 100, lastWeek: 80 },
-    { date: "20th", thisWeek: 140, lastWeek: 90 },
-    { date: "22nd", thisWeek: 160, lastWeek: 100 },
-    { date: "24th", thisWeek: 170, lastWeek: 105 },
-    { date: "26th", thisWeek: 175, lastWeek: 110 },
-    { date: "28th", thisWeek: 180, lastWeek: 115 },
-    { date: "30th", thisWeek: 160, lastWeek: 120 },
-  ];
+
 
   const topItems = [
     { name: "Beautiful Chair", quantity: 12 },
@@ -48,7 +44,7 @@ const Dashboard = () => {
 
           <div className="bg-red-500 p-4 rounded-lg text-white shadow-md text-center hover:bg-red-700">
             <h3 className="text-lg font-bold">All Inventory Quantity</h3>
-            <p className="text-3xl font-semibold">4</p>
+            <p className="text-3xl font-semibold">{inventory?.data?.all_quantity[0]?.totalQuantity}</p>
 
           </div>
           <div className="bg-blue-500 p-4 rounded-lg text-white shadow-md text-center">
@@ -71,22 +67,22 @@ const Dashboard = () => {
             <p className="text-green-500">↑ 12.5% Since last week</p>
 
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={data}>
+              <LineChart data={stock?.data?.graph}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="thisWeek" stroke="#007bff" name="stock in" />
-                <Line type="monotone" dataKey="lastWeek" stroke="#888888" name="stock out" />
+                <Line type="monotone" dataKey="stockIn" stroke="#007bff" name="stock in" />
+                <Line type="monotone" dataKey="stockOut" stroke="#888888" name="stock out" />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
 
-          <Table title={"Top 5 products with the highest stock remaining"} items={topItems}/> {/*  table top 5 สินค้าที่ยังเหลือเยอะใน stock */}
+          <Table title={"Top 5 products with the highest stock remaining"} items={inventory?.data?.top5_most}/> {/*  table top 5 สินค้าที่ยังเหลือเยอะใน stock */}
           <Table title={"Top 5 products with the highest stockout rate"} items={stock?.data?.top5}/> {/*  table top 5 สินค้าที่ stockout มากสุด */}
-          <Table title={"Top 5 products with the lowest stock remaining"} items={topItems}/> {/*  table top 5 สินค้าที่หลือน้อยสุด stock */}
+          <Table title={"Top 5 products with the lowest stock remaining"} items={inventory?.data?.top5_less}/> {/*  table top 5 สินค้าที่หลือน้อยสุด stock */}
 
 
 

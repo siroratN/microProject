@@ -12,14 +12,14 @@ const Table = ({title, items }) => {
                   <thead className="[&_tr]:border-b ">
                     <tr className="border-b">
                       <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                      <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Quantity</th>
+                      <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Stock Out rate</th>
                     </tr>
                   </thead>
                   <tbody className="[&_tr:last-child]:border-0">
                     {items?.map((item, index) => (
                       <tr key={index} className="border-b transition-colors hover:bg-muted/50">
                         <td className="p-4 align-middle font-medium">{item?._id}</td>
-                        <td className="p-4 align-middle text-right">{item?.totalOut}</td>
+                        <td className="p-4 align-middle text-right">{item?.totalOut || item?.totalQuantity}</td>
                       </tr>
                     ))}
                   </tbody>

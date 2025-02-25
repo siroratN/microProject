@@ -8,12 +8,8 @@ import axios from "axios";
 export default function CreateReport() {
   const [Items, setItems] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
+  const [error, setError] = useState([])
 
-  const [date, setDate] = useState({
-    reportName: "",
-    timestamp_start: "",
-    timestamp_end: ""
-  })
   const [info, setinfo] = useState({
     reportName: "",
     timestamp_start: "",
@@ -52,21 +48,21 @@ export default function CreateReport() {
       // ส่ง request ไปที่เซิร์ฟเวอร์เพื่อสร้าง report
       const response = await axios.post("http://localhost:5001/report/Createreport", {
         products: products,
-        reportName: info.reportName,
         timestamp_start: info.timestamp_start,
         timestamp_end: info.timestamp_end
       });
 
       console.log("Report generated successfully");
 
-      // ✅ ดึง `downloadUrl` จาก response และดาวน์โหลดไฟล์
       if (response.data.downloadUrl) {
         window.open(`http://localhost:5001${response.data.downloadUrl}`, "_blank");
         console.log("API Response:", response.data);
+        setError("")
       }
 
     } catch (error) {
       console.log("form ERROR", error);
+      setError("data NOT FOUND")
     }
   };
 
@@ -76,10 +72,7 @@ export default function CreateReport() {
       <Card className="w-full max-w-2xl bg-white">
         <p className="text-2xl text-center pt-8">Create Report</p>
         <form action="" className="pt-8" onSubmit={(e) => { submit(e) }}>
-          <label htmlFor="" className="pl-8 text-xl">Report Name</label>
-          <Input id="ReportName" onChange={(e) => setinfo((prev) => ({ ...prev, reportName: e.target.value }))}
-          />
-          <br />
+
 
           <div className="flex items-center gap-0">
             {/* Start Date */}
@@ -111,8 +104,8 @@ export default function CreateReport() {
           <div className="mt-8" >
             <label htmlFor="" className="pl-8 text-xl">Select Inventory</label>
             <select className="mx-8 flex h-10 w-full max-w-xl bg-[#F7F7F7] rounded-md border border-gray-300  px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onChange={(e) => { handleSelect(e.target.value) }} >
-              <option value="" disabled key={999}>Select Item</option>
+              onChange={(e) => { handleSelect(e.target.value) }} defaultValue="">
+              <option value="" disabled>Select Item</option>
               {
                 Items?.map((item, index) => {
                   return <option value={JSON.stringify({ productIDs: item._id, productName: item.name })} key={index}>{item.name}</option>
@@ -122,16 +115,18 @@ export default function CreateReport() {
           </div>
 
           <div className="p-4">
-            <h2 className="text-lg font-semibold mb-2">Selected Items</h2>
+                        {selectedItems.length > 0 && (
+              <h2 className="text-lg font-semibold mb-2">Selected Items</h2>
+            )}
             <div className="flex flex-wrap gap-2">
               {selectedItems.map((item, index) => (
-                <div key={index} className="border border-[#474747] px-4 py-2 rounded-md" value={item.productIDs} onClick={(e) => { removeItem(item.productIDs) }}>
+                <div key={index} className="ml-4 border border-[#474747] px-4 py-2 rounded-md" value={item.productIDs} onClick={(e) => { removeItem(item.productIDs) }}>
                   {item.productName}
                 </div>
               ))}
             </div>
           </div>
-
+          {error && <p className="pl-8 pt-8 text-red-500">{error}</p>}
           <div className="pt-16 flex justify-center">
             <button type="submit"
               class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600

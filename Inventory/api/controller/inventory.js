@@ -93,3 +93,66 @@ async function sendAlertMessage(product) {
 
     console.log(`Sent alert for product: ${product.name}`);
 }
+
+export const dashboard_inventory = async (req, res) => {
+
+    const data = {
+        all_quantity: "",
+        top5_most: "",
+        top5_less: "",
+    }
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    // 1) sum quantity stock in  7 วันที่ผ่านมา
+
+
+    const Allquantity = await Product.aggregate([
+        {
+            $group: {
+                _id: null,
+                totalQuantity: { $sum: "$quantity" } // รวมจำนวน stock ที่เข้า
+            }
+        }
+    ]);
+    data.all_quantity = Allquantity
+
+    const top5_most = await Product.aggregate([
+        {
+            $group: {
+                _id: "$name",
+                totalQuantity: { $sum: "$quantity" }
+            }
+        },
+        {
+            $sort: {
+                totalQuantity: -1
+            }
+        },
+        {
+            $limit: 5
+        }
+
+    ]);
+    data.top5_most = top5_most
+
+    const top5_less = await Product.aggregate([
+        {
+            $group: {
+                _id: "$name",
+                totalQuantity: { $sum: "$quantity" }
+            }
+        },
+        {
+            $sort: {
+                totalQuantity: 1
+            }
+        },
+        {
+            $limit: 5
+        }
+
+    ]);
+    data.top5_less = top5_less
+
+    res.json({ message: "Query Finished", data });
+};

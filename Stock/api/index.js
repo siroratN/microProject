@@ -7,8 +7,7 @@ dotenv.config();
 const app = express();
 app.use(cors()); 
 app.use(express.json());
-import stockController from './controller/stockController.js';
-
+import stockRoute from './routes/stockRoute.js';
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {
         try {
@@ -22,7 +21,7 @@ async function connectDB() {
     }
 }
 
-app.use("/", stockController);
+app.use("/", stockRoute);
 
 app.listen(4002, async () => {
     await connectDB();

@@ -49,7 +49,7 @@ const filePath = path.join(__dirname, "data.csv");
 
 export const createReport = async (req, res) => {
   try {
-    const { products, timestamp_start, timestamp_end, reportName } = req.body;
+    const { products, timestamp_start, timestamp_end } = req.body;
     const filter = {};
 
     if (Array.isArray(products) && products.length > 0) {
@@ -103,22 +103,3 @@ export const downloadReport = (req, res) => {
   });
 };
 
-
-
-// app.get("/download-csv", (req, res) => {
-//   const filePath = path.join(__dirname, "data.csv");
-//   const ws = fs.createWriteStream(filePath);
-//   const csvStream = format({ headers: true });
-//   csvStream.pipe(ws);
-
-//   data.forEach((row) => csvStream.write(row));
-//   csvStream.end();
-
-//   ws.on("finish", () => {
-//     res.download(filePath, "data.csv", (err) => {
-//       if (err) console.error("Error downloading CSV:", err);
-//       fs.unlinkSync(filePath);
-//     });
-
-//   });
-// });

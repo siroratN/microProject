@@ -10,6 +10,16 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
+export const searchProducts = async (req, res) => {
+    const query = req.query.product;
+    try {
+        const products = await Product.find({ name: { $regex: query, $options: "i" } });
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch products" });
+    }
+}
+
 export const getProductsById = async (req, res) => {
     const productId = req.params.id;
     try {

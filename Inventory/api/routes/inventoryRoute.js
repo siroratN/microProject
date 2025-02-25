@@ -10,5 +10,6 @@ router.get("/getAllProducts", inventoryController.getAllProducts)
 router.get("/dashboard_inventory", inventoryController.dashboard_inventory)
 router.get("/getProductsByCategory/:category", inventoryController.getProductsByCategory)
 router.get("/allCategories", inventoryController.allCategories)
+router.get("/search", inventoryController.searchProducts)
 
 export default router

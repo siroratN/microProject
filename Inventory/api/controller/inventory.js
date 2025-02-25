@@ -1,6 +1,6 @@
 import amqp from 'amqplib';
-import Product from '../model/Model.js';
-import nodeCron from 'node-cron';
+import {Product, Category} from '../model/Model.js';
+
 export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find();
@@ -20,10 +20,31 @@ export const getProductsById = async (req, res) => {
     }
 };
 
+export const getProductsByCategory = async (req, res) => {
+    const category = req.params.category;
+    try {
+        const products = await Product
+            .find({ category: category })
+            .populate("category");
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch products" });
+    }
+};
+
+export const allCategories = async (req, res) => {
+    try {
+        const categories = await Category.find();
+        res.json(categories);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch categories" });
+    }
+};
+
 export const addProduct = async (req, res) => {
     try {
-        const { name, quantity, threshold, image } = req.body;
-        const pro = new Product({ name, quantity, threshold, image });
+        const { name, quantity, threshold, image, category } = req.body;
+        const pro = new Product({ name, quantity, threshold, image, category });
         console.log(pro);
         await pro.save();
         res.json(pro);
@@ -72,16 +93,3 @@ async function sendAlertMessage(product) {
 
     console.log(`Sent alert for product: ${product.name}`);
 }
-
-// nodeCron.schedule("*/10 * * * * *", async () => {
-
-//     try {
-//         const products = await Product.find();
-//         const lowStockProducts = products.filter(p => p.quantity < p.threshold);
-//         for (const product of lowStockProducts) {
-//             await sendAlertMessage(product);
-//         }
-//     } catch (error) {
-//         console.error(error);
-//     }
-// });

@@ -26,7 +26,7 @@ async function connectDB() {
 
 app.use("/", authenRoute);
 
-app.listen(4004, async () => {
+app.listen(4003, async () => {
     await connectDB();
-    console.log('Stock Service running on port 4004');
+    console.log('Stock Service running on port 4003');
 });

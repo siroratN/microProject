@@ -6,7 +6,6 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Redirect หน้าแรกไปที่ /login */}
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>

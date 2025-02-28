@@ -3,12 +3,13 @@ import {Product, Category} from '../model/Model.js';
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().populate("category", "name");
         res.json(products);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch products" });
     }
 };
+
 
 export const searchProducts = async (req, res) => {
     const query = req.query.product;
@@ -84,7 +85,7 @@ export const updateStock = async (req, res) => {
 
         res.json({ message: "Stock updated successfully", product });
     } catch (error) {
-        res.status(500).json({ error: "Failed to update stock" });
+        res.status(404).json({ lll: error });
     }
 };
 

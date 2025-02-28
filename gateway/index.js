@@ -34,8 +34,8 @@ const checkPermission = (req, res, next) => {
 
 app.use("/inventory", proxy("http://localhost:4001"));
 app.use("/stock", proxy("http://localhost:4002"));
-app.use("/alert", proxy("http://localhost:4004"));
 app.use("/authen", proxy("http://localhost:4003"));
+app.use("/alert", proxy("http://localhost:4004"));
 app.use("/report", checkPermission, proxy("http://localhost:4005"));
 
 app.listen(5001, () => {

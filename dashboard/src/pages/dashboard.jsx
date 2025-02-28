@@ -1,4 +1,3 @@
-import React from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import Table from "../components/ui/table";
 import { useState, useEffect } from "react";

@@ -11,7 +11,7 @@ const Sidebar = () => {
                         <a href="http://localhost:3001/home" className="block p-2 hover:bg-gray-700 rounded">Home</a>
                     </li>
                     <li>
-                        <a href="http://localhost:3006/dashboard" className="block p-2 hover:bg-gray-700 rounded">Dashboard</a>
+                        <a href="http://localhost:3006/" className="block p-2 hover:bg-gray-700 rounded">Dashboard</a>
                     </li>
                     <li>
                         <a href="http://localhost:3005/"  className="block p-2 hover:bg-gray-700 rounded">Report</a>

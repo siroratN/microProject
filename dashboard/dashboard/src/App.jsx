@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import Table from "./components/ui/table";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Layout from 'inventory/client'
+import Sidebar from '../../../Inventory/client/src/components/Sidebar';
 
 const Dashboard = () => {
   const [stock, setStock] = useState("")
@@ -28,7 +28,7 @@ const Dashboard = () => {
   return (
  
     <div className="flex">
-      <Layout/>
+      <Sidebar/>
 
 
       <div className="p-6 flex-1 items-center">

@@ -13,12 +13,12 @@ const Sidebar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/about" className="block p-2 hover:bg-gray-700 rounded">
+                        <Link to="/" className="block p-2 hover:bg-gray-700 rounded">
                             About
                         </Link>
                     </li>
                     <li>
-                        <Link to="/contact" className="block p-2 hover:bg-gray-700 rounded">
+                        <Link to="/" className="block p-2 hover:bg-gray-700 rounded">
                             Contact
                         </Link>
                     </li>

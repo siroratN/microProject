@@ -54,7 +54,7 @@ export const Login = async(req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000, // อายุ 7 วัน
         });
 
-        res.status(200).json({ message: "เข้าสู่ระบบสำเร็จ" });
+        res.redirect("http://localhost:5001/dashboard");
     }
     catch(error){
         res.status(500).json({error:"Failed to Login"})

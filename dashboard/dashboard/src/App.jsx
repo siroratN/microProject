@@ -3,6 +3,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import Table from "./components/ui/table";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Layout from 'inventory/client'
+
 const Dashboard = () => {
   const [stock, setStock] = useState("")
   const [inventory, setinventory] = useState("")
@@ -24,11 +26,11 @@ const Dashboard = () => {
 
 
   return (
+ 
     <div className="flex">
-      
+      <Layout/>
 
 
-      
       <div className="p-6 flex-1 items-center">
 
         {/* Grid Layout เเสดง ข้างบน 3 อัน*/}

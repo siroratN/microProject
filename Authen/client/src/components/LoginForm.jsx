@@ -13,7 +13,7 @@ const LoginForm = () => {
       const response = await axios.post("http://localhost:5001/authen/login", {
         username,
         password,
-      }, { withCredentials: true }); // สำหรับส่ง cookie
+      }, { withCredentials: false }); // สำหรับส่ง cookie
 
       alert(response.data.message); // แสดงข้อความสำเร็จ
     } catch (err) {

@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 export const Register = async (req, res) => {
     try {
-        const { username, password, role, first_name, last_name } = req.body;
+        const { username, password, role, first_name, last_name,email } = req.body;
         if (!username || !password || !role || !first_name || !last_name) {
             return res.status(400).json({ error: "กรุณากรอกข้อมูลให้ครบถ้วน" });
         }
@@ -18,10 +18,10 @@ export const Register = async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const user = await Users.create({ username: username, password: hashedPassword, role: role, first_name: first_name, last_name: last_name });
+        const user = await Users.create({ username: username, password: hashedPassword, role: role, first_name: first_name, last_name: last_name, email: email });
         res.json(user);
     } catch (error) {
-        res.status(500).json({ error: "Failed to Register" });
+        res.status(500).json({ error });
     }
 };
 
@@ -57,6 +57,6 @@ export const Login = async(req, res) => {
         res.redirect("http://localhost:5001/dashboard");
     }
     catch(error){
-        res.status(500).json({error:"Failed to Login"})
+        res.status(500).json({error})
     }
 }

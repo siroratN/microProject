@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Settings from "../../components/settings";
 import PlusIcon from "../../components/PlusIcon";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +21,6 @@ const Home = () => {
         ? `http://localhost:5001/inventory/search?product=${query}`
         : "http://localhost:5001/inventory/getAllProducts";
       const response = await axios.get(url);
-      console.log(response);
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -33,91 +31,71 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  // Handle submit ของฟอร์มค้นหา
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     fetchProducts(searchTerm);
   };
 
   return (
-    <>
-      <div className="grid grid-cols-3 p-4">
-        <div
-          className="flex items-center text-violet-800 cursor-pointer bg-opacity-50 bg-violet-400 p-2 w-32 rounded-md"
+    <div className="p-6 max-w-6xl mx-auto">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <button
+          className="flex items-center px-4 py-2 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-700 transition"
           onClick={() => navigate("/addProduct")}
         >
           <PlusIcon />
           <span className="ml-2">เพิ่มสินค้า</span>
-        </div>
+        </button>
 
-        <div className="col-span-2">
-          <form
-            className="flex items-center"
-            onSubmit={handleSearchSubmit}
+        {/* Search Bar */}
+        <form className="flex items-center w-1/2" onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            name="product"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            placeholder="ค้นหาสินค้า..."
+          />
+          <button
+            type="submit"
+            className="ml-2 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition"
           >
-            <input
-              type="text"
-              id="simple-search"
-              name="product"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg px-10 p-2.5 w-full"
-            />
-            <button
-              type="submit"
-              className="p-2.5 ms-2 text-sm font-medium text-white bg-violet-700 rounded-lg border border-violet-700 hover:bg-violet-800 focus:ring-4 focus:outline-none focus:ring-violet-300"
-            >
-                <svg
-                className="w-4 h-4"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-              <span className="sr-only">Search</span>
-            </button>
-          </form>
-        </div>
+            ค้นหา
+          </button>
+        </form>
       </div>
 
-      {/* แสดงรายการสินค้า */}
-      <div className="grid grid-cols-3 gap-7">
+      {/* Product List */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.length > 0 ? (
           products.map((product) => (
             <div
               key={product._id}
-              className="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:bg-gray-50"
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl"
             >
               <img
-                className="p-8 rounded-t-lg"
+                className="w-full h-48 object-cover"
                 src={
-                  product.image ||
-                  "https://cdn-dhpod.nitrocdn.com/ciLqvltLGzQghvUohHGIDrpOdslNfbyn/assets/images/optimized/rev-2300483/www.mtkwood.com/wp-content/uploads/2020/08/464232-PFPXVY-410-scaled.jpg"
-                }
+                  product.image}
                 alt={product.name}
               />
-              <div className="px-5 pb-5">
-                <div className="flex items-center justify-between mb-3">
-                  <h5 className="font-semibold tracking-tight text-gray-900 text-md">
-                    {product.name}
-                  </h5>
-                  <div className="text-violet-500" onClick={() => handleNavigate(product._id)}>
-                    <Settings />
-                  </div>
+              <div className="p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <h5 className="text-lg font-semibold text-gray-900">{product.name}</h5>
+                  <span className="text-sm text-gray-600">{product.category?.name}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-bold text-gray-900">
-                    จำนวน {product.quantity}
-                  </span>
-                  <span className="text-lg font-bold text-gray-900">
-                    จำนวนขั้นต่ำ {product.threshold}
-                  </span>
+                <div className="flex justify-between items-center">
+                  <span className="text-md font-medium text-gray-900">คงเหลือ: {product.quantity}</span>
+                  <span className="text-md font-medium text-red-500">ขั้นต่ำ: {product.threshold}</span>
                 </div>
+                <button
+                  className="mt-4 w-full bg-violet-600 text-white py-2 rounded-lg hover:bg-violet-700 transition"
+                  onClick={() => handleNavigate(product._id)}
+                >
+                  ปรับจำนวนสินค้า
+                </button>
               </div>
             </div>
           ))
@@ -125,7 +103,7 @@ const Home = () => {
           <p className="text-gray-500 text-center col-span-3">ไม่มีสินค้า</p>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

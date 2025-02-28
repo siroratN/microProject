@@ -38,7 +38,6 @@ const ProductDetail = () => {
 
   const handleConfirm = async () => {
     try {
-
       const quantityDiff = tempQuantity - product.quantity;
 
       if (quantityDiff === 0) {
@@ -60,48 +59,49 @@ const ProductDetail = () => {
     }
   };
 
-  if (!product) return <p className="text-center mt-10">กำลังโหลด...</p>;
+  if (!product) return <p className="text-center mt-10 text-lg font-semibold text-gray-600">กำลังโหลด...</p>;
 
   return (
-    <div className="p-10">
-      <h1 className="text-2xl font-bold mb-4">{id}</h1>
+    <div className="p-10 max-w-xl mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">{product.name}</h1>
       <img
-        className="w-64 mb-4"
+        className="w-full h-64 object-cover rounded-lg mb-4"
         src={product.image || "https://cdn.example.com/default-image.jpg"}
         alt={product.name}
       />
-      <h2 className="text-xl font-semibold">{product.name}</h2>
 
-      <div className="flex items-center mt-4">
-        <span className="text-lg font-medium mr-2">จำนวน:</span>
-        <button onClick={handleDecrease} className="px-3 py-1 bg-red-500 text-white rounded-lg">
+      <div className="text-center text-lg font-medium text-gray-700">จำนวนสินค้า: {product.quantity}</div>
+      
+      <div className="flex justify-center items-center mt-6 gap-4">
+        <button onClick={handleDecrease} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
           -
         </button>
         <input
           type="number"
-          className="border px-3 py-1 mx-2 rounded-lg w-24 text-center"
+          className="border px-4 py-2 text-center rounded-lg w-24 text-gray-800"
           value={tempQuantity}
           onChange={handleChange}
         />
-        <button onClick={handleIncrease} className="px-3 py-1 bg-green-500 text-white rounded-lg">
+        <button onClick={handleIncrease} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
           +
-        </button>
-        <button onClick={handleConfirmChange} className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
-          บันทึก
         </button>
       </div>
 
+      <button onClick={handleConfirmChange} className="block w-full mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center">
+        บันทึกการเปลี่ยนแปลง
+      </button>
+
       {/* Modal ยืนยัน */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">ยืนยันการเปลี่ยนแปลงจำนวนสินค้า?</h2>
-            <p>จำนวนใหม่: {tempQuantity}</p>
-            <div className="flex gap-4 mt-4">
-              <button onClick={handleConfirm} className="px-4 py-2 bg-green-500 text-white rounded-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">ยืนยันการเปลี่ยนแปลงจำนวนสินค้า?</h2>
+            <p className="text-gray-700">จำนวนใหม่: {tempQuantity}</p>
+            <div className="flex justify-center gap-4 mt-4">
+              <button onClick={handleConfirm} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
                 ยืนยัน
               </button>
-              <button onClick={() => setIsModalOpen(false)} className="px-4 py-2 bg-gray-500 text-white rounded-lg">
+              <button onClick={() => setIsModalOpen(false)} className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
                 ยกเลิก
               </button>
             </div>
@@ -111,7 +111,7 @@ const ProductDetail = () => {
 
       <button 
         onClick={() => window.location.href = "http://localhost:5173/home"} 
-        className="mt-6 px-4 py-2 bg-gray-700 text-white rounded-lg"
+        className="block w-full mt-6 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition text-center"
       >
         กลับหน้าแรก
       </button>

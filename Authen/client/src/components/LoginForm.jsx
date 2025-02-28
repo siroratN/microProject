@@ -14,8 +14,8 @@ const LoginForm = () => {
         username,
         password,
       }, { withCredentials: false }); // สำหรับส่ง cookie
-
-      alert(response.data.message); // แสดงข้อความสำเร็จ
+      alert(response.data.message); // Show success message
+      window.location.href = "http://localhost:5174/";
     } catch (err) {
       setError(err.response?.data?.error || "Login failed");
     }

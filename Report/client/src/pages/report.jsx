@@ -62,7 +62,7 @@ export default function CreateReport() {
 
     } catch (error) {
       console.log("form ERROR", error);
-      setError("data NOT FOUND")
+      setError("ไม่พบข้อมูล")
     }
   };
 
@@ -70,14 +70,14 @@ export default function CreateReport() {
   return (
     <div className="flex h-screen  pt-8 justify-center bg-[#F7F7F7] p-4">
       <Card className="w-full max-w-2xl bg-white">
-        <p className="text-2xl text-center pt-8">Create Report</p>
+        <p className="text-2xl text-center pt-8">สร้างรายงาน</p>
         <form action="" className="pt-8" onSubmit={(e) => { submit(e) }}>
 
 
           <div className="flex items-center gap-0">
             {/* Start Date */}
             <div className="flex flex-col">
-              <label htmlFor="StartDate" className="text-xl pl-8">Start Date</label>
+              <label htmlFor="StartDate" className="text-xl pl-8">เลือกวันเริ่มต้น</label>
               <Input
                 id="StartDate"
                 type="datetime-local"
@@ -89,7 +89,7 @@ export default function CreateReport() {
 
             {/* End Date */}
             <div className="flex flex-col">
-              <label htmlFor="EndDate" className="text-xl pl-8">End Date</label>
+              <label htmlFor="EndDate" className="text-xl pl-8">เลือกวันจบ</label>
               <Input
                 id="EndDate"
                 type="datetime-local"
@@ -102,10 +102,10 @@ export default function CreateReport() {
 
 
           <div className="mt-8" >
-            <label htmlFor="" className="pl-8 text-xl">Select Inventory</label>
+            <label htmlFor="" className="pl-8 text-xl">เลือกสินค้า</label>
             <select className="mx-8 flex h-10 w-full max-w-xl bg-[#F7F7F7] rounded-md border border-gray-300  px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onChange={(e) => { handleSelect(e.target.value) }} defaultValue="">
-              <option value="" disabled>Select Item</option>
+              <option value="" disabled>เลือกสินค้า</option>
               {
                 Items?.map((item, index) => {
                   return <option value={JSON.stringify({ productIDs: item._id, productName: item.name })} key={index}>{item.name}</option>
@@ -116,7 +116,7 @@ export default function CreateReport() {
 
           <div className="p-4">
                         {selectedItems.length > 0 && (
-              <h2 className="text-lg font-semibold mb-2">Selected Items</h2>
+              <h2 className="text-lg font-semibold mb-2">เลือกสินค้า</h2>
             )}
             <div className="flex flex-wrap gap-2">
               {selectedItems.map((item, index) => (
@@ -129,9 +129,9 @@ export default function CreateReport() {
           {error && <p className="pl-8 pt-8 text-red-500">{error}</p>}
           <div className="pt-16 flex justify-center">
             <button type="submit"
-              class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600
+              className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600
              dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-              Submit
+              ยืนยัน
             </button>
           </div>
         </form>

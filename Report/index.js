@@ -9,6 +9,9 @@ const app = express();
 app.use(cors());  // เปิดการใช้งาน CORS
 app.use(express.json());
 
+
+
+
 mongoose.connect('mongodb://localhost:27017/Report', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const Report = mongoose.model('Report', new mongoose.Schema({

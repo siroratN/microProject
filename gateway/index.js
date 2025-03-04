@@ -7,9 +7,29 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+    'http://localhost:3001',  
+    'http://localhost:3002',
+    'http://localhost:3003',
+    'http://localhost:3004',
+    'http://localhost:3005',
+    'http://localhost:3006',
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);  
+        } else {
+            callback(new Error('Not allowed by CORS'));  
+        }
+    },
+    credentials: true  
+}));
+
 app.use(express.json());
 app.use(cookieParser()); 
+
 
 const checkPermission = (req, res, next) => {
     const token = req.cookies.auth_token;

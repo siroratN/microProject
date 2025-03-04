@@ -13,9 +13,8 @@ const LoginForm = () => {
       const response = await axios.post("http://localhost:5001/authen/login", {
         username,
         password,
-      }, { withCredentials: false }); // สำหรับส่ง cookie
-      alert(response.data.message); // Show success message
-      window.location.href = "http://localhost:5174/";
+      }, { withCredentials: true }); // สำหรับส่ง cookie
+      window.location.href = "http://localhost:3001/home";
     } catch (err) {
       setError(err.response?.data?.error || "Login failed");
     }

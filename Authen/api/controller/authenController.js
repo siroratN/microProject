@@ -34,12 +34,12 @@ export const Login = async(req, res) => {
         }
         const user = await Users.findOne({ username });
         if(!user){
-            return res.status(404).json({ error: "username ไม่ถูกต้อง" });
+            return res.status(404).json({ error: "username หรือ password ไม่ถูกต้อง" });
         }
 
         const check = await bcrypt.compare(password, user.password);
         if (!check) {
-            return res.status(400).json({ error: "รหัสผ่านไม่ถูกต้อง" });
+            return res.status(400).json({ error: "username หรือ password ไม่ถูกต้อง" });
         }
         const JWT_SECRET = process.env.JWT;
         const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, {
@@ -54,7 +54,7 @@ export const Login = async(req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000, // อายุ 7 วัน
         });
 
-        res.redirect("http://localhost:3006/"); //ไปหน้า dashboard
+        res.status(200).json({message:"Login Successful!!"})
     }
     catch(error){
         res.status(500).json({error})

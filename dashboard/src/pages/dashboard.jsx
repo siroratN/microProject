@@ -34,17 +34,17 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           <a href="http://localhost:3001/home">
             <div className="bg-red-500 p-4 rounded-lg text-white shadow-md text-center hover:bg-red-700">
-              <h3 className="text-lg font-bold">All Inventory Quantity</h3>
+              <h3 className="text-lg font-bold">จำนวนสินค้าคงคลังทั้งหมด</h3>
               <p className="text-3xl font-semibold">{inventory?.data?.all_quantity[0]?.totalQuantity}</p>
             </div>
           </a>
           <div className="bg-blue-500 p-4 rounded-lg text-white shadow-md text-center">
-            <h3 className="text-lg font-bold">Stock in number last 7 days</h3>
+            <h3 className="text-lg font-bold">จำนวนสินค้าขาเข้า 7 วันที่ผ่านมา</h3>
             <p className="text-3xl font-semibold">{stock?.data?.stock_in_7[0]?.totalQuantity}</p>
           </div>
 
           <div className="bg-purple-500 p-4 rounded-lg text-white shadow-md text-center">
-            <h3 className="text-lg font-bold">Stock out number last 7 days</h3>
+            <h3 className="text-lg font-bold">จำนวนสินค้าขาออก 7 วันที่ผ่านมา</h3>
             <p className="text-3xl font-semibold">{stock?.data?.stock_out_7[0]?.totalQuantity}</p>
           </div>
 
@@ -54,7 +54,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-2 gap-4 mt-8">
 
           <div className="p-4 bg-white  rounded-lg">
-            <h2 className="text-lg font-semibold">Stock In & Stock Out last 7 days</h2>
+            <h2 className="text-lg font-semibold">สินค้าขาเข้า & สินค้าขาออก 7 วันที่ผ่านมา</h2>
 
             <ResponsiveContainer width="100%" height={300} className="pt-4">
               <LineChart data={stock?.data?.graph}>
@@ -63,16 +63,16 @@ const Dashboard = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="stockIn" stroke="#007bff" name="stock in" />
-                <Line type="monotone" dataKey="stockOut" stroke="#888888" name="stock out" />
+                <Line type="monotone" dataKey="stockIn" stroke="#007bff" name="สินค้าขาเข้า" />
+                <Line type="monotone" dataKey="stockOut" stroke="#888888" name="สินค้าขาออก" />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
 
-          <Table title={"Top 5 products with the highest stock remaining"} items={inventory?.data?.top5_most} /> {/*  table top 5 สินค้าที่ยังเหลือเยอะใน stock */}
-          <Table title={"Top 5 products with the highest stockout rate"} items={stock?.data?.top5} /> {/*  table top 5 สินค้าที่ stockout มากสุด */}
-          <Table title={"Top 5 products with the lowest stock remaining"} items={inventory?.data?.top5_less} /> {/*  table top 5 สินค้าที่หลือน้อยสุด stock */}
+          <Table title={"5 อันดับสินค้าคงคลังที่มีจำนวนคงเหลือ มากที่สุด"} items={inventory?.data?.top5_most} header="จำนวนคงเหลือ"/> {/*  table top 5 สินค้าที่ยังเหลือเยอะใน stock */}
+          <Table title={"5 อันดับสินค้าที่มีอัตราสินค้าขาออกมากที่สุด"} items={stock?.data?.top5} header="จำนวนขาออกทั้งหมด"/> {/*  table top 5 สินค้าที่ stockout มากสุด */}
+          <Table title={"5 อันดับสินค้าคงคลังที่มีจำนวนคงเหลือ น้อยที่สุด"} items={inventory?.data?.top5_less} header="จำนวนคงเหลือ"/> {/*  table top 5 สินค้าที่หลือน้อยสุด stock */}
 
 
 

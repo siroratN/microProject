@@ -6,10 +6,15 @@ import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app = express();
-app.use(cors()); 
 app.use(express.json());
 import authenRoute from './routes/authenRoute.js';
 app.use(cookieParser());
+
+
+app.use(cors({
+    origin: 'http://localhost:3003',  
+    credentials: true                 
+}));
 
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {

@@ -43,8 +43,8 @@ export default function CreateReport() {
 
     try {
       const products = selectedItems.map(item => item.productIDs);
-      console.log("pro_id",products)
-      
+      console.log("pro_id", products)
+
       const response = await axios.post(
         "http://localhost:5001/report/Createreport",
         {
@@ -56,32 +56,38 @@ export default function CreateReport() {
           withCredentials: true
         }
       );
-      
+
 
       console.log("Report generated successfully", response.data.downloadUrl);
 
       if (response.data.downloadUrl) {
         const downloadUrl = `http://localhost:5001${response.data.downloadUrl}`;
-    
+
         fetch(downloadUrl, {
-            method: "GET",
-            credentials: "include",
+          method: "GET",
+          credentials: "include",
         })
-        .then(response => response.blob())
-        .then(blob => {
+          .then(response => response.blob())
+          .then(blob => {
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.setAttribute("download", "report.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        })
-        .catch(error => console.error("Error downloading file:", error));
-    }
+          })
+          .catch(error => console.error("Error downloading file:", error));
+      }
 
     } catch (error) {
       console.log("form ERROR", error);
-      setError("ไม่พบข้อมูล")
+      if (error.response.status === 404) {
+        setError("ไม่พบข้อมูล");
+      } else if (error.response.status === 401) {
+        setError("คุณไม่ได้รับอนุญาตให้ใช้ dowload report");
+      } else {
+        setError(`เกิดข้อผิดพลาด (${error.response.status})`);
+      }
     }
   };
 
@@ -134,7 +140,7 @@ export default function CreateReport() {
           </div>
 
           <div className="p-4">
-                        {selectedItems.length > 0 && (
+            {selectedItems.length > 0 && (
               <h2 className="text-lg font-semibold mb-2">เลือกสินค้า</h2>
             )}
             <div className="flex flex-wrap gap-2">

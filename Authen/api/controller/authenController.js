@@ -50,9 +50,11 @@ export const Login = async(req, res) => {
         res.cookie("auth_token", token, {
             httpOnly: true,  
             secure: true,    
-            sameSite: "Strict", 
+            sameSite: "None",
+            domain: "localhost",    
             maxAge: 7 * 24 * 60 * 60 * 1000, // อายุ 7 วัน
         });
+        console.log("test cookie:", token)
 
         res.status(200).json({message:"Login Successful!!"})
     }

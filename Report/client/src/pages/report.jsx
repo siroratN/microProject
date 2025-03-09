@@ -40,25 +40,44 @@ export default function CreateReport() {
 
   const submit = async (e) => {
     e.preventDefault();
-    console.log("submit!!!");
 
     try {
       const products = selectedItems.map(item => item.productIDs);
       console.log("pro_id",products)
-      // ส่ง request ไปที่เซิร์ฟเวอร์เพื่อสร้าง report
-      const response = await axios.post("http://localhost:5001/report/Createreport", {
-        products: products,
-        timestamp_start: info.timestamp_start,
-        timestamp_end: info.timestamp_end
-      });
+      
+      const response = await axios.post(
+        "http://localhost:5001/report/Createreport",
+        {
+          products: products,
+          timestamp_start: info.timestamp_start,
+          timestamp_end: info.timestamp_end
+        },
+        {
+          withCredentials: true
+        }
+      );
+      
 
-      console.log("Report generated successfully");
+      console.log("Report generated successfully", response.data.downloadUrl);
 
       if (response.data.downloadUrl) {
-        window.open(`http://localhost:5001${response.data.downloadUrl}`, "_blank");
-        console.log("API Response:", response.data);
-        setError("")
-      }
+        const downloadUrl = `http://localhost:5001${response.data.downloadUrl}`;
+    
+        fetch(downloadUrl, {
+            method: "GET",
+            credentials: "include",
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", "report.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        })
+        .catch(error => console.error("Error downloading file:", error));
+    }
 
     } catch (error) {
       console.log("form ERROR", error);

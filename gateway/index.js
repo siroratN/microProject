@@ -33,7 +33,6 @@ app.use(cookieParser());
 
 const checkPermission = (req, res, next) => {
     const token = req.cookies.auth_token;
-
     if (!token) {
         return res.status(401).json({ message: "Unauthorized: No token provided" });
     }
@@ -41,7 +40,6 @@ const checkPermission = (req, res, next) => {
     try {
         const JWT_SECRET = process.env.JWT;
         const decoded = jwt.verify(token, JWT_SECRET);
-
         if (decoded.role === "employee") {
             return res.status(403).json({ message: "Forbidden: Users are not allowed to access reports" });
         }

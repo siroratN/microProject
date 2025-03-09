@@ -1,0 +1,7 @@
+_id,productId,quantityChange,name,action,timestamp
+67b9f7447f4516fc47045795,67b8bd4882add2ac73fdc4e2,22,B,IN,Sat Feb 22 2025 23:11:48 GMT+0700 (Indochina Time)
+67b9f7a77f4516fc47045798,67b8bd4882add2ac73fdc4e2,5,B,OUT,Sat Feb 22 2025 23:13:27 GMT+0700 (Indochina Time)
+67b9f7aa7f4516fc4704579a,67b8bd4882add2ac73fdc4e2,12,B,OUT,Sat Feb 22 2025 23:13:30 GMT+0700 (Indochina Time)
+67c199f94031681badc38640,67b8bd4882add2ac73fdc4e2,3,,IN,Fri Feb 28 2025 17:41:10 GMT+0700 (Indochina Time)
+67c199f94031681badc38641,67b8bd4882add2ac73fdc4e2,6,,OUT,Fri Feb 28 2025 17:41:24 GMT+0700 (Indochina Time)
+67c199f94031681badc38642,67b8bd4882add2ac73fdc4e2,6,,IN,Fri Feb 28 2025 17:43:24 GMT+0700 (Indochina Time)

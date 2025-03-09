@@ -45,7 +45,7 @@ consumeStockMovementQueue();
 //   "timestamp_start": "2/13/2025",
 //   "timestamp_end": "2/17/2025"
 // }
-const filePath = path.join(__dirname, "data.csv");
+const filePath = path.join(__dirname, `${Date.now()}_data.csv`);
 
 export const createReport = async (req, res) => {
   try {
@@ -90,11 +90,15 @@ export const createReport = async (req, res) => {
 };
 
 export const downloadReport = (req, res) => {
+
+  
   res.download(filePath, "data.csv", (err) => {
     if (err) {
       console.error("Error downloading file:", err);
       return res.status(500).json({ message: "Error downloading file" });
     }
+
+    
     
     // ✅ ลบไฟล์หลังจากดาวน์โหลดเสร็จ
     fs.unlink(filePath, (err) => {

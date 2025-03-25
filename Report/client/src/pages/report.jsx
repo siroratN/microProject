@@ -82,7 +82,7 @@ export default function CreateReport() {
     } catch (error) {
       console.log("form ERROR", error);
       if (error.response.status === 404) {
-        setError("ไม่พบข้อมูล");
+        setError("ไม่พบข้อมูล", error);
       } else if (error.response.status === 401) {
         setError("คุณไม่ได้รับอนุญาตให้ใช้ dowload report");
       } else {
@@ -154,8 +154,7 @@ export default function CreateReport() {
           {error && <p className="pl-8 pt-8 text-red-500">{error}</p>}
           <div className="pt-16 flex justify-center">
             <button type="submit"
-              className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600
-             dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+              className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
               ยืนยัน
             </button>
           </div>

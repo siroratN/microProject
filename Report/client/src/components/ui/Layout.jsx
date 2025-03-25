@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import axios from "axios";
+const permission = axios.get()
 
 const Layout = () => {
   

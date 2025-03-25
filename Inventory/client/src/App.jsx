@@ -3,18 +3,10 @@ import './App.css';
 import { Route, Routes } from "react-router-dom";
 import Layout from './components/Layout';
 import AddProduct from './pages/newPro/AddProduct';
-import RequireAuth from './components/RequireAuth';
-
 function App() {
   return (
     <Routes>
-      <Route 
-        element={
-          <RequireAuth>
-            <Layout />
-          </RequireAuth>
-        }
-      >
+      <Route element={<Layout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/addProduct" element={<AddProduct />} />
       </Route>

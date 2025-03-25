@@ -11,7 +11,7 @@ const Home = () => {
   const handleNavigate = (id) => {
     const newWindow = window.open(`http://localhost:3002/detail/${id}`, "_blank");
     setTimeout(() => {
-      newWindow.postMessage({ productId: id }, "http://localhost:3002");
+      newWindow.postMessage({ productId: id }, "http://localhost:5174");
     }, 1000);
   };
 
@@ -20,12 +20,7 @@ const Home = () => {
       const url = query
         ? `http://localhost:5001/inventory/search?product=${query}`
         : "http://localhost:5001/inventory/getAllProducts";
-  
-      // ส่ง request พร้อมกับ cookies
-      const response = await axios.get(url, {
-        withCredentials: true, // ส่ง cookies ไปด้วย
-      });
-  
+      const response = await axios.get(url);
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);

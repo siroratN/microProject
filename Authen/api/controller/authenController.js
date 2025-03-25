@@ -85,7 +85,7 @@ export const checkPermission = async (req, res) => {
         // ดึง token จาก cookie
         const token = req.cookies.auth_token;
         if (!token) {
-            return res.status(200).json({role:"staff"})
+            return res.status(200).json({role:"none"})
         }
         const JWT_SECRET = process.env.JWT;
         const decoded = jwt.verify(token, JWT_SECRET);

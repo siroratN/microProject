@@ -8,6 +8,11 @@ const getPermission = async () => {
             withCredentials: true,
         });
         console.log("Permission data:", res.data.role);
+        if(res.data.role === "none"){
+            console.log('unauthorized')
+            window.location.href = "http://localhost:3003/login"
+        }
+
         return res.data.role;
     } catch (error) {
         console.error("Error fetching permissions:", error.response?.data || error.message);

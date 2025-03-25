@@ -41,7 +41,7 @@ const checkPermission = (req, res, next) => {
     try {
         const JWT_SECRET = process.env.JWT;
         const decoded = jwt.verify(token, JWT_SECRET);
-        if (decoded.role === "employee") {
+        if (decoded.role === "employee" && requestedPath === "/report") {
             return res.status(403).json({ message: "Forbidden: Users are not allowed to access reports" });
         }
         req.user = decoded;

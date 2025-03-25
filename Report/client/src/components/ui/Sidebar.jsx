@@ -60,12 +60,12 @@ const Sidebar = () => {
                             <li>
                                 <a href="http://localhost:3005/report" className="block p-2 hover:bg-gray-700 rounded">Report</a>
                             </li>
-                            <li>
-                                <a onClick={Logout} className="block p-2 hover:bg-gray-700 rounded">Logout</a>
-                            </li>
+                            
                         </>
                     }
-
+                    <li>
+                                <a onClick={Logout} className="block p-2 hover:bg-gray-700 rounded">Logout</a>
+                            </li>
                 </ul>
             </nav>
         </div>

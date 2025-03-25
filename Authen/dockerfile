@@ -1,0 +1,20 @@
+# ใช้ Node.js image
+FROM node:14-slim
+
+# ตั้ง working dir เป็น /app/api ตรงกับ api/
+WORKDIR /app/api
+
+# คัดลอก package.json ที่อยู่ใน api/
+COPY api/package*.json ./
+
+# ติดตั้ง dependencies
+RUN npm install
+
+# คัดลอกไฟล์ทั้งหมดใน Alert เข้า /app
+COPY . /app
+
+# เปิด port
+EXPOSE 80
+
+# รัน npm start ภายใน /app/api
+CMD ["npm", "start"]

@@ -33,5 +33,5 @@ app.use("/", authenRoute);
 
 app.listen(4003, async () => {
     await connectDB();
-    console.log('Stock Service running on port 4003');
+    console.log('Authen Service running on port 4003');
 });

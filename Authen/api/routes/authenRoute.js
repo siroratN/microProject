@@ -5,6 +5,7 @@ const router = express.Router()
 
 router.post("/register", authenController.Register)
 router.post("/login", authenController.Login)
+router.post("/logout", authenController.Logout)
 
 
 export default router

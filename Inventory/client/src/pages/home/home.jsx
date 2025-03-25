@@ -9,9 +9,9 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleNavigate = (id) => {
-    const newWindow = window.open(`http://localhost:5174/detail/${id}`, "_blank");
+    const newWindow = window.open(`http://localhost:3002/detail/${id}`, "_blank");
     setTimeout(() => {
-      newWindow.postMessage({ productId: id }, "http://localhost:5174");
+      newWindow.postMessage({ productId: id }, "http://localhost:3002");
     }, 1000);
   };
 
@@ -20,7 +20,12 @@ const Home = () => {
       const url = query
         ? `http://localhost:5001/inventory/search?product=${query}`
         : "http://localhost:5001/inventory/getAllProducts";
-      const response = await axios.get(url);
+  
+      // ส่ง request พร้อมกับ cookies
+      const response = await axios.get(url, {
+        withCredentials: true, // ส่ง cookies ไปด้วย
+      });
+  
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);

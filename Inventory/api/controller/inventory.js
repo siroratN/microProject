@@ -65,7 +65,7 @@ export const addProduct = async (req, res) => {
 };
 
 export const updateStock = async (req, res) => {
-    const { productId, action, quantityChange } = req.body;
+    const { productId, quantityChange, action, } = req.body;
     try {
         const product = await Product.findById(productId);
 
